@@ -21,6 +21,7 @@
             name = "Mats Haugerud";
             text = ' is a\nComputer Science student at\nAberystwyth, Wales';
             var tag = "";
+            var canGlitch = false;
 
             function typing(i, currentTuple){
                 id = currentTuple[0];
@@ -37,12 +38,13 @@
                     document.getElementById(id).innerHTML += nextChar;
                     
                     i++;
-                    setTimeout(typing,0,i,currentTuple);//Math.floor(Math.random()*100+40), i, currentTuple);
+                    setTimeout(typing, Math.floor(Math.random()*100+40), i, currentTuple);
                     
                 }  else {
                     // console.log("Exit");
                     currentPrint += 1;
                     if(currentPrint >= contents.length){
+                        canGlitch = true;
                         return 1;
                     }
                     typing(0, contents[currentPrint]);
@@ -55,24 +57,29 @@
 
             // ******************************************************
             // Char swapping functions
-            function randInterval(first) {
-                if(first){ // Wait before first time glitching
-                    setTimeout(randInterval, 3000, false);
+            function randInterval() {
+                if(!canGlitch){ // Wait before first time glitching
+                    setTimeout(randInterval, 3000);
                 } else {
-                    var min = 0.5,
-                        max = 3;
+                    var min = 0.1,
+                        max = 1;
                     var rand = Math.floor(Math.random() * (max - min + 1) + min); //Generate Random number between 5 - 10
                     var min = 0,
-                        max = contents.length;
+                        max = contents.length-1;
                     var randElement = Math.floor(Math.random() * (max - min + 1) + min); //Generate Random number between 5 - 10
-                    var elementToReplace = contents[randElement];
+                    var elementToReplace = contents[randElement][0];
+                    // console.log("D ",elementToReplace);
                     // console.log('Wait for ' + rand + ' seconds');
-                    glitchText(elementToReplace);
-                    setTimeout(randInterval, rand * 1000, false);
+                    glitchText(elementToReplace, randElement);
+                    setTimeout(randInterval, rand * 1000);
                 }
             }
 
-            function swapChar(time, charToSwap, char, isWrongChar, elementToReplace){
+            var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!"#¤%&/()=?`\\§|^¨~\'*@£${[]}-_.:,;<>+øæåØÆÅ';
+            var charactersLength = characters.length;
+
+            function swapChar(time, charToSwap, char, isWrongChar, elementToReplace, a){
+                // console.log("C", elementToReplace)
                 let swapDelay = 0.5;
                 // swap char
                 let info = document.getElementById(elementToReplace);
@@ -80,7 +87,8 @@
                 let outcontent = "";
                 if (!isWrongChar){
                     for(let i = 0; i < content.length; i++){
-                        outcontent += i == charToSwap ? 'b' : content[i];
+                        let toChar = characters.charAt(Math.floor(Math.random() * charactersLength));
+                        outcontent += i == charToSwap ? toChar : content[i];
                     }
                     time -= 1;
                 } else {
@@ -88,42 +96,50 @@
                         outcontent += i == charToSwap ? char : content[i];
                     }
                 }
-                // console.log(outcontent);
+                isWrongChar != isWrongChar;
+                // console.log("New: ", outcontent);
                 info.textContent = outcontent;
-                if(time > 0){
-                    setTimeout(swapChar, swapDelay, time, charToSwap, char, !isWrongChar);
+                if (time > 0 || isWrongChar){
+                    setTimeout(swapChar, swapDelay, time, charToSwap, char, !isWrongChar, elementToReplace, a);
+                } else {
+                    info.textContent = contents[a][1];
                 }
             }
 
-            function glitchText(elementToReplace){
-                console.log("Glitch");
+            function glitchText(elementToReplace, a){
+                // console.log("Glitch");
                 // How many times to glitch, random
                 var min = 1,
-                    max = 5;
+                    max = 6;
                 let charToSwap = " ";
-                let glitchTimes = Math.floor(Math.random() * (max - min + 1) + min);
+                let glitchTimes = Math.floor(Math.random() * (max - min + 1) + min)*2;
+                // console.log("E", elementToReplace);
                 let info = document.getElementById(elementToReplace);
+                // console.log("F", info.textContent);
                 let char;
                 try {
-                    if(info.textContent.length != null){
+                    // console.log(info.textContent.length);
+                    if(info.textContent.length == null){
+                        // console.log("Error. Length of content to replace is null");
                         return 0;
                     }
                     do {
                         var min = 0,
-                            max = info.textContent.length;
+                            max = info.textContent.length-1;
                         charToSwap = Math.floor(Math.random() * (max - min + 1) + min);
+                        // console.log(charToSwap);
                         char = char = info.textContent[charToSwap];
-                    }
-                    while (char == ' ' || char == '\n');
-                    swapChar(glitchTimes, charToSwap, info.textContent[charToSwap], true, elementToReplace);
+                    } while (char == ' ' || char == '\n');
+                    // console.log("Gonna swap ", char, " at ", charToSwap, elementToReplace)
+                    swapChar(glitchTimes, charToSwap, char, true, elementToReplace, a);
                     // Swap to random char, then swap back
                 } catch {
-
+                    // console.log("Error. Failed");
                 }
             }
 
             typeInfo();
-            randInterval(true);
+            randInterval();
         </script>
 
 
@@ -200,7 +216,7 @@
                 // styleCircle();
                 // styleLinks();
             }
-            addLinks();
+            // addLinks();
         </script>
     </body>
 </html>
