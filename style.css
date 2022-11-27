@@ -1,9 +1,14 @@
 body {
     margin: 0;
     padding: 0;
+    color: white;
     background: #1E1E1E;
+    font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;  /*Consolas, 'Courier New', monospace*/
+    font-weight: 700;
+    overflow-x: hidden;
 }
 #info {
+    position:fixed;
     margin-top: 300px;
     margin-left: 100px;
     width: 700px;
@@ -14,12 +19,9 @@ body {
     display: inline;
 }
 #name, #text, #course, #text2, #location {
-    color: white;
     font-size: 40px;
     text-align: left;
     /* text-transform: uppercase; */
-    font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;  /*Consolas, 'Courier New', monospace*/
-    font-weight: 700;
     
 }
 #name {
@@ -46,5 +48,37 @@ pre {
     transition-timing-function: ease-in-out;
     transition-duration: 0.5s;
     vertical-align: middle;  
-    
+
+}
+
+
+
+
+#demos {
+    width: 700px;
+    float: right;
+}
+
+section {
+    font-size: 20px;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    min-height: 100vh;
+}
+
+.hidden {
+    opacity: 0;
+    filter: blur(50px);
+    transition: all 3s;
+}
+.show {
+    opacity: 1;
+    filter: blur(0);
+}
+
+@media(prefers-reduced-motion) {
+    .hidden {
+        opacity: 1;
+    }
 }
