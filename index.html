@@ -52,8 +52,84 @@
                 typing(0, contents[currentPrint]);
                 i= 0;
             }
+
+            // ******************************************************
+            // Char swapping functions
+            function randInterval(first) {
+                if(first){ // Wait before first time glitching
+                    setTimeout(randInterval, 3000, false);
+                } else {
+                    var min = 0.5,
+                        max = 3;
+                    var rand = Math.floor(Math.random() * (max - min + 1) + min); //Generate Random number between 5 - 10
+                    var min = 0,
+                        max = contents.length;
+                    var randElement = Math.floor(Math.random() * (max - min + 1) + min); //Generate Random number between 5 - 10
+                    var elementToReplace = contents[randElement];
+                    // console.log('Wait for ' + rand + ' seconds');
+                    glitchText(elementToReplace);
+                    setTimeout(randInterval, rand * 1000, false);
+                }
+            }
+
+            function swapChar(time, charToSwap, char, isWrongChar, elementToReplace){
+                let swapDelay = 0.5;
+                // swap char
+                let info = document.getElementById(elementToReplace);
+                let content = info.textContent;
+                let outcontent = "";
+                if (!isWrongChar){
+                    for(let i = 0; i < content.length; i++){
+                        outcontent += i == charToSwap ? 'b' : content[i];
+                    }
+                    time -= 1;
+                } else {
+                    for(let i = 0; i < content.length; i++){
+                        outcontent += i == charToSwap ? char : content[i];
+                    }
+                }
+                // console.log(outcontent);
+                info.textContent = outcontent;
+                if(time > 0){
+                    setTimeout(swapChar, swapDelay, time, charToSwap, char, !isWrongChar);
+                }
+            }
+
+            function glitchText(elementToReplace){
+                console.log("Glitch");
+                // How many times to glitch, random
+                var min = 1,
+                    max = 5;
+                let charToSwap = " ";
+                let glitchTimes = Math.floor(Math.random() * (max - min + 1) + min);
+                let info = document.getElementById(elementToReplace);
+                let char;
+                try {
+                    if(info.textContent.length != null){
+                        return 0;
+                    }
+                    do {
+                        var min = 0,
+                            max = info.textContent.length;
+                        charToSwap = Math.floor(Math.random() * (max - min + 1) + min);
+                        char = char = info.textContent[charToSwap];
+                    }
+                    while (char == ' ' || char == '\n');
+                    swapChar(glitchTimes, charToSwap, info.textContent[charToSwap], true, elementToReplace);
+                    // Swap to random char, then swap back
+                } catch {
+
+                }
+            }
+
             typeInfo();
+            randInterval(true);
         </script>
+
+
+
+
+
 
         <script>
             var links =[{label: 'link1', bg: '#c0392b', dest: "test.html"}, 
