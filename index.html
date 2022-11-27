@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Mats Haugerud</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="info">
+            <div id="name"></div>
+            <div id="text"></div>
+            <div id="course"></div>
+            <div id="text2"></div>
+            <div id="location"></div>
+        </div>
+
+        <script type="text/javascript">
+            var name, text, location;
+            var contents = [["name", "Mats Haugerud "], ["text", "is a "], ["course", "Computer Science "], ["text2", "student at "], ["location", "Aberystwyth University"]];
+            var currentPrint = 0;
+            name = "Mats Haugerud";
+            text = ' is a\nComputer Science student at\nAberystwyth, Wales';
+            var tag = "";
+
+            function typing(i, currentTuple){
+                id = currentTuple[0];
+                thisText = currentTuple[1];
+                if(i==0){
+                    // console.log("Replacing: ", id);
+                    // console.log("Printing ", thisText);
+                }
+                if(i<thisText.length){
+                    let nextChar = thisText.charAt(i);
+                    if(nextChar == '\n'){
+                        document.getElementById(id).innerHTML += "<br />";
+                    }
+                    document.getElementById(id).innerHTML += nextChar;
+                    
+                    i++;
+                    setTimeout(typing,0,i,currentTuple);//Math.floor(Math.random()*100+40), i, currentTuple);
+                    
+                }  else {
+                    // console.log("Exit");
+                    currentPrint += 1;
+                    if(currentPrint >= contents.length){
+                        return 1;
+                    }
+                    typing(0, contents[currentPrint]);
+                }
+            }
+            async function typeInfo(){
+                typing(0, contents[currentPrint]);
+                i= 0;
+            }
+            typeInfo();
+        </script>
+
+        <script>
+            var links =[{label: 'link1', bg: '#c0392b', dest: "test.html"}, 
+                        {label: 'link2', bg: '#16a085', dest: "test.html"}, 
+                        {label: 'link3', bg: '#8e44ad', dest: "test.html"}, 
+                        {label: 'link4', bg: '#27ae60', dest: "test.html"}, 
+                        {label: 'link5', bg: '#f39c12', dest: "test.html"}, 
+                        {label: 'link6', bg: '#2980b9', dest: "test.html"}];
+
+            var radius = 40;
+            var windowHeight = window.innerHeight;
+            if(windowHeight === 0) {windowHeight = 238;}
+            var circleGaps = windowHeight / (links.length+1.5);
+
+            function addLinks() {
+                for (var i=0; i<links.length; i++) {
+                    link = document.createElement('a'),
+                    link.className = "circlebutton";
+                    hover = document.createElement('span');
+                    link.href = links[i].dest;
+
+                    link.style.color = links[i].bg;
+                    link.style.position = 'fixed';
+                    link.style.bottom = circleGaps*(i+1)+"px";
+                    link.style.right = 100+"px";
+                    link.style.zIndex = 100;
+                    link.style.width = radius+'px';
+                    link.style.height = radius+'px';
+                    link.style.backgroundColor = links[i].bg;
+
+                    link.innerHTML = links[i].label;
+                    
+                    document.body.appendChild(link);
+                    document.body.appendChild(hover);
+                    link.addEventListener('mouseover', linkOver);
+                    link.addEventListener('mouseout', linkOut);
+                    links[i].elem = link;
+                    links[i].hover = hover;
+                }
+            }
+            function linkOver(e) {
+                var thisLink = e.target, thisHover = thisLink.nextSibling;
+                // thisLink.style.paddingLeft = radius*1.25+'px';
+                thisHover.style.opacity = 1;
+                thisLink.style.height = radius*1.5+'px';
+                thisLink.style.width = radius*1.5+'px';
+                // thisLink.style.transform = scale(2,2);
+                // thisLink.style.transform = translate(radius+"px", radius+"px");
+                console.log("Over", thisLink);
+            }
+
+            function linkOut(e) {
+                var thisLink = e.target, thisHover = thisLink.nextSibling;
+                thisLink.style.height = radius+'px';
+                thisLink.style.width = radius+"px";
+                // thisLink.style.paddingLeft = radius*1.2+'px';
+                // thisHover.style.opacity = 0;
+                console.log("Not over");
+            }
+
+            window.onresize = function() {
+                windowHeight = window.innerHeight;
+                radius = windowHeight*0.6,
+                borderSize = radius*0.021;  
+                fontSize = radius*0.12,
+                linkSize = radius*0.25;
+                circleGaps = windowHeight / (links.length+1);
+                // styleCircle();
+                // styleLinks();
+            }
+            addLinks();
+        </script>
+    </body>
+</html>

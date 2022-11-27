@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #1E1E1E;
+}
+#info {
+    margin-top: 300px;
+    margin-left: 100px;
+    width: 700px;
+    /* white-space: nowrap; */
+    float:left;
+}
+#info * {
+    display: inline;
+}
+#name, #text, #course, #text2, #location {
+    color: white;
+    font-size: 40px;
+    text-align: left;
+    /* text-transform: uppercase; */
+    font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;  /*Consolas, 'Courier New', monospace*/
+    font-weight: 700;
+    
+}
+#name {
+    color: #9CDCFE;
+}
+#course {
+    color: #B5CEA8;
+}
+#location {
+    color: #CE9178;
+}
+pre {
+    margin: 0.5em 0;
+}
+
+.circlebutton {
+    /* background-color: #4CAF50; Green */
+    display: inline-block;
+    border: none;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 16px;
+    animation-duration: 0.5s;  
+    vertical-align: middle;  
+}
