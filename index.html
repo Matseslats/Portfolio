@@ -60,7 +60,7 @@
             // Char swapping functions
             function randInterval() {
                 if(!canGlitch){ // Wait before first time glitching
-                    setTimeout(randInterval, 3000);
+                    setTimeout(randInterval, rand * 1000);
                 } else {
                     var min = 0.1,
                         max = 1;
