@@ -17,7 +17,7 @@
 
         <script type="text/javascript">
             var name, text, location;
-            const contents = [["name", "Mats Haugerud "], ["text", "is a "], ["course", "Computer Science "], ["text2", "student at "], ["location", "Aberystwyth University"]];
+            const contents = [["name", "Mats Haugerud "], ["text", "is a "], ["course", "Computer Science "], ["text2", "student at "], ["location", "Aberystwyth University"], ["mst", "Current time on Mars:"], ["rovertime", "01:59:60"]];
             var currentPrint = 0;
             name = "Mats Haugerud";
             text = ' is a\nComputer Science student at\nAberystwyth, Wales';
@@ -129,7 +129,7 @@
                             max = info.textContent.length-1;
                         charToSwap = Math.floor(Math.random() * (max - min + 1) + min);
                         // console.log(charToSwap);
-                        char = char = info.textContent[charToSwap];
+                        char = info.textContent[charToSwap];
                     } while (char == ' ' || char == '\n');
                     // console.log("Gonna swap ", char, " at ", charToSwap, elementToReplace)
                     swapChar(glitchTimes, charToSwap, char, true, elementToReplace, a);
@@ -139,8 +139,43 @@
                 }
             }
 
+            const positions = {
+                "Perseverance": 77.43,
+                "InSight": 135.970,
+                "Curiosity": 137.42
+            }
+            const landingsol = {
+                "Perseverance": 52304,
+                "InSight": 51511,
+                "Curiosity": 49268
+            }
+
+            function getMarsTime(rover){
+                var unixTimestamp = Math.floor(Date.now() / 1000);
+                var tai_offset = 37;  // International Atomic Time, leap seconds since 1 January 2017
+
+                var JDutc = unixTimestamp / 86400 + 2440587.5;  // Julian date, UTC
+                var JDtt = JDutc + (tai_offset + 32.184) / 86400;  // Julian date in terrestrial time
+                var MSD = (JDtt - 2405522.0028779) / 1.0274912517;  // Mars Sol date
+                var MTC = (MSD % 1) * 24;
+
+                var lambda_ = 360 - positions[rover];
+                var sol = Math.floor(MSD - lambda_ / 360) - landingsol[rover];
+                var hours = (MTC - lambda_ * 24 / 360) % 24;
+                var minutes = hours % 1 * 60;  // Get fractional part, multiply by 60 to get mins
+                var seconds = minutes % 1 * 60;  // Get fractional part, multiply by 60 to get secs
+
+                contents[6][1] = (String(Math.floor(hours)).padStart(2, "0") + ":" + String(Math.floor(minutes)).padStart(2, "0") + ":" + String(Math.floor(seconds)).padStart(2, "0"));
+                // console.log(contents[6][1]);
+                if(canGlitch){
+                    document.getElementById("rovertime").innerHTML = contents[6][1];
+                }
+                setTimeout(getMarsTime, 1000, rover);
+            }
+
             typeInfo();
             randInterval();
+            getMarsTime("Curiosity");
         </script>
 
 
@@ -214,8 +249,8 @@
         </script>
         <div id="demos">
             <section class="hidden">
-                <h1>Hi a</h1>
-                <h2>Lorem ipsum blah blah blah</h2>
+                <div id="mst"></div>
+                <div id="rovertime"></div>
             </section>
             <section class="hidden">
                 <h1>Hi b</h1>
