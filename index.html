@@ -8,16 +8,16 @@
     </head>
     <body>
         <div id="info">
-            <div id="name"></div>
-            <div id="text"></div>
-            <div id="course"></div>
-            <div id="text2"></div>
-            <div id="location"></div>
+            <span id="name"></span>
+            <span id="text"></span>
+            <span id="course"></span>
+            <span id="text2"></span>
+            <span id="location"></span>
         </div>
 
         <script type="text/javascript">
             var name, text, location;
-            const contents = [["name", "Mats Haugerud "], ["text", "is a "], ["course", "Computer Science "], ["text2", "student at "], ["location", "Aberystwyth University"], ["mst", "Current time on Mars:"], ["rovertime", "01:59:60"]];
+            const contents = [["name", "Mats Haugerud "], ["text", "is a "], ["course", "Computer Science "], ["text2", "student at "], ["location", "Aberystwyth University"], ["mst", "Current time on Mars:"], ["rovertime", "not initialized"], ["sol", "not initialized"]];
             var currentPrint = 0;
             name = "Mats Haugerud";
             text = ' is a\nComputer Science student at\nAberystwyth, Wales';
@@ -166,9 +166,11 @@
                 var seconds = minutes % 1 * 60;  // Get fractional part, multiply by 60 to get secs
 
                 contents[6][1] = (String(Math.floor(hours)).padStart(2, "0") + ":" + String(Math.floor(minutes)).padStart(2, "0") + ":" + String(Math.floor(seconds)).padStart(2, "0"));
+                contents[7][1] = "sol: " + sol;
                 // console.log(contents[6][1]);
                 if(canGlitch){
                     document.getElementById("rovertime").innerHTML = contents[6][1];
+                    document.getElementById("sol").innerHTML = contents[7][1];
                 }
                 setTimeout(getMarsTime, 1000, rover);
             }
@@ -251,15 +253,16 @@
             <section class="hidden">
                 <div id="mst"></div>
                 <div id="rovertime"></div>
+                <div id="sol"></div>
             </section>
-            <section class="hidden">
+            <!-- <section class="hidden">
                 <h1>Hi b</h1>
                 <h2>Lorem ipsum bla ad msnkjdnakjnd <br>h blah blah</h2>
             </section>
             <section class="hidden">
                 <h1>Hi c</h1>
                 <h2>Loremaslkndlakn k ipsum blah blah blah</h2>
-            </section>
+            </section> -->
         </div>
     </body>
 </html>
